@@ -1,13 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 export interface LoginState {
-  username: string;
+  Email: string;
   password: string;
 }
 // Define the initial state using that type
 const initialState: LoginState = {
-  username: "",
-  password: "",
+ 
+  password: "1234567",
+    Email: "cbonelo224@gmail.com",
+
 };
 export const loginSlice = createSlice({
   name: "counter",
