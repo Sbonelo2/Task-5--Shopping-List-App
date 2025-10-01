@@ -1,13 +1,22 @@
-import "./App.css";
+import React from "react";
+import { Routes, Route } from "react-router-dom";
+import NavBar from "./Components/NavBar";
+import Home from "./Pages/Home";
+import Profile from "./Pages/Profile";
+import Registration from "./Pages/Register";
 import Login from "./Pages/Login";
 
-function App() {
+
+export default function App() {
   return (
-    <>
-      <h1>Shopping List App</h1>
-      <Login />
-    </>
+    <div>
+      <NavBar />
+      <Routes>
+        <Route path="/home" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/registration" element={<Registration />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </div>
   );
 }
-
-export default App;
