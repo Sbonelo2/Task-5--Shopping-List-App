@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import type { RootState } from "../../Store"; // <-- adjust path to your store
+import { updateProfile, updatePassword } from "../Features/ProfileSlice";
 
 export default function Profile() {
-  // Simulate logged-in user data (normally comes from Redux or API)
-  const [user, setUser] = useState({
-    username: "",
-    name: "",
-    cellphone: "",
-    email: "",
-    password: "",
-  });
+  const dispatch = useDispatch();
+  const user = useSelector((state: RootState) => state.profile);
 
-  // Local form state for profile updates
+  const [isEditing, setIsEditing] = useState(false);
+
+  // Local state for editing profile
   const [profileData, setProfileData] = useState({
     username: user.username,
     name: user.name,
@@ -18,37 +18,38 @@ export default function Profile() {
     email: user.email,
   });
 
-  // Local form state for password update
   const [newPassword, setNewPassword] = useState("");
 
-  // Update form state if user changes (useful if loaded asynchronously)
-  useEffect(() => {
+  // Toggle edit mode
+  const handleEditToggle = () => {
+    setIsEditing(!isEditing);
     setProfileData({
       username: user.username,
       name: user.name,
       cellphone: user.cellphone,
       email: user.email,
     });
-  }, [user]);
+  };
 
-  // Handle profile input changes
+  // Handle profile field change
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData({ ...profileData, [name]: value });
   };
 
-  // Update profile
+  // Save profile changes
   const handleProfileUpdate = (e: React.FormEvent) => {
     e.preventDefault();
-    setUser({ ...user, ...profileData });
+    dispatch(updateProfile(profileData));
+    setIsEditing(false);
     alert("Profile updated successfully!");
   };
 
-  // Update password
+  // Save password changes
   const handlePasswordUpdate = (e: React.FormEvent) => {
     e.preventDefault();
     if (newPassword.trim()) {
-      setUser({ ...user, password: newPassword });
+      dispatch(updatePassword(newPassword));
       setNewPassword("");
       alert("Password updated successfully!");
     }
@@ -57,7 +58,7 @@ export default function Profile() {
   return (
     <div
       style={{
-        maxWidth: "500px",
+        maxWidth: "600px",
         margin: "2rem auto",
         padding: "2rem",
         backgroundColor: "white",
@@ -67,16 +68,16 @@ export default function Profile() {
     >
       <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>My Profile</h2>
 
-      {/* Display current info */}
-      <div
-        style={{
-          marginBottom: "2rem",
-          padding: "1rem",
-          background: "#f9f9f9",
-          borderRadius: "8px",
-        }}
-      >
-        <div>
+      {/* Show current info */}
+      {!isEditing && (
+        <div
+          style={{
+            marginBottom: "2rem",
+            padding: "1rem",
+            background: "#f9f9f9",
+            borderRadius: "8px",
+          }}
+        >
           <h3>Current Info</h3>
           <p>
             <strong>Username:</strong> {user.username}
@@ -90,75 +91,104 @@ export default function Profile() {
           <p>
             <strong>Email:</strong> {user.email}
           </p>
+
+          <button
+            onClick={handleEditToggle}
+            style={{
+              marginTop: "1rem",
+              padding: "0.7rem 1.2rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "black",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            Edit Profile
+          </button>
         </div>
-      </div>
+      )}
 
-      {/* Profile Update Form */}
-      <form onSubmit={handleProfileUpdate} style={{ marginBottom: "2rem" }}>
-        <input
-          type="text"
-          name="username"
-          value={profileData.username}
-          onChange={handleProfileChange}
-          placeholder="Username"
-          required
-          style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
-        />
+      {/* Profile update form */}
+      {isEditing && (
+        <form onSubmit={handleProfileUpdate} style={{ marginBottom: "2rem" }}>
+          <input
+            type="text"
+            name="username"
+            value={profileData.username}
+            onChange={handleProfileChange}
+            placeholder="Update Username"
+            style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
+          />
 
-        <input
-          type="text"
-          name="name"
-          value={profileData.name}
-          onChange={handleProfileChange}
-          placeholder="Full Name"
-          required
-          style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
-        />
+          <input
+            type="text"
+            name="name"
+            value={profileData.name}
+            onChange={handleProfileChange}
+            placeholder="Update Full Name"
+            style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
+          />
 
-        <input
-          type="tel"
-          name="cellphone"
-          value={profileData.cellphone}
-          onChange={handleProfileChange}
-          placeholder="Cellphone Number"
-          required
-          style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
-        />
+          <input
+            type="tel"
+            name="cellphone"
+            value={profileData.cellphone}
+            onChange={handleProfileChange}
+            placeholder="Update Cellphone Number"
+            style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
+          />
 
-        <input
-          type="email"
-          name="email"
-          value={profileData.email}
-          onChange={handleProfileChange}
-          placeholder="Email Address"
-          required
-          style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
-        />
+          <input
+            type="email"
+            name="email"
+            value={profileData.email}
+            onChange={handleProfileChange}
+            placeholder="Update Email Address"
+            style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
+          />
 
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "0.7rem",
-            border: "none",
-            borderRadius: "5px",
-            backgroundColor: "black",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          Update Profile
-        </button>
-      </form>
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              padding: "0.7rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "black",
+              color: "white",
+              cursor: "pointer",
+              marginBottom: "0.5rem",
+            }}
+          >
+            Save Changes
+          </button>
 
-      {/* Password Update Form */}
+          <button
+            type="button"
+            onClick={handleEditToggle}
+            style={{
+              width: "100%",
+              padding: "0.7rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "gray",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            Cancel
+          </button>
+        </form>
+      )}
+
+      {/* Password update form */}
       <form onSubmit={handlePasswordUpdate}>
         <input
           type="password"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           placeholder="New Password"
-          required
           style={{ width: "100%", marginBottom: "0.8rem", padding: "0.5rem" }}
         />
 

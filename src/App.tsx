@@ -1,4 +1,3 @@
-import React from "react";
 import { Routes, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import Home from "./Pages/Home";
@@ -14,7 +13,7 @@ export default function App() {
       <NavBar />
       <Routes>
         <Route path="/home" element={<Home />} />
-        <Route path="/Profile" element={<Profile />} />
+        <Route path="/profile" element={<Profile />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
       </Routes>

@@ -1,14 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import LoginReducer from "./src/Features/LoginSlice";
 import RegisterReducer from "./src/Features/RegisterSlice";
-// import ProfileReducer from "./src/Features/ProfileSlice";
-// import ProfileReducer from "./src/Features/ProfileSlice";
+import ProfileReducer from "./src/Features/ProfileSlice";
 
 export const store = configureStore({
     reducer: {
         login: LoginReducer,
-    register: RegisterReducer,
-        // profile: ProfileReducer,
+        register: RegisterReducer,
+        profile: ProfileReducer,
 
   },
 });
