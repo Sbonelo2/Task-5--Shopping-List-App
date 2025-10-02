@@ -1,15 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+
+type User = {
+  id: number;
+  username: string;
+  name: string;
+  cellphone: string;
+  email: string;
+  password: string;
+};
 
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [goToProfile, setGoToProfile] = useState(false); 
+  const [currentUser, setCurrentUser] = useState<User | null>(null);
   const navigate = useNavigate();
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Check if a user is already logged in
+  useEffect(() => {
+    const userId = localStorage.getItem("loggedInUserId");
+    if (userId) {
+      fetch(`http://localhost:5000/users/${userId}`)
+        .then((res) => res.json())
+        .then((data) => setCurrentUser(data))
+        .catch(() => localStorage.removeItem("loggedInUserId"));
+    }
+  }, []);
 
+  const handleLogin = async (destination: "home" | "profile") => {
     try {
       const res = await fetch(
         `http://localhost:5000/users?username=${username}&password=${password}`
@@ -20,20 +38,23 @@ export default function Login() {
         const user = data[0];
         console.log("💘 Login success:", user);
 
-        localStorage.setItem("loggedInUserId", user.id);
+        localStorage.setItem("loggedInUserId", user.id.toString());
+        setCurrentUser(user); // update state
 
        
-        if (goToProfile) {
-          navigate("/profile");
-        } else {
-          navigate("/home");
-        }
+        if (destination === "profile") navigate("/profile");
+        else navigate("/home");
       } else {
-        alert("🥺 Invalid credentials");
+        alert("🥺 Invalid username or password");
       }
     } catch (error) {
       console.error("❌ Error logging in:", error);
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUserId");
+    setCurrentUser(null);
   };
 
   return (
@@ -44,10 +65,31 @@ export default function Login() {
         alignItems: "center",
         minHeight: "100vh",
         backgroundColor: "#f4f4f4",
+        flexDirection: "column",
+        gap: "2rem",
       }}
     >
-      <form
-        onSubmit={handleLogin}
+      {currentUser && (
+        <div style={{ textAlign: "center" }}>
+          <h2>Welcome back, {currentUser.name} 🎉</h2>
+          <button
+            onClick={handleLogout}
+            style={{
+              marginTop: "1rem",
+              padding: "0.7rem 1.2rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "red",
+              color: "white",
+              cursor: "pointer",
+            }}
+          >
+            Logout
+          </button>
+        </div>
+      )}
+
+      <div
         style={{
           backgroundColor: "white",
           padding: "2rem",
@@ -87,30 +129,38 @@ export default function Login() {
           }}
         />
 
-        
-        <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <input
-            type="checkbox"
-            checked={goToProfile}
-            onChange={(e) => setGoToProfile(e.target.checked)}
-          />
-          dive to Profile
-        </label>
+        <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
+          <button
+            onClick={() => handleLogin("profile")}
+            style={{
+              padding: "0.7rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "black",
+              color: "white",
+              cursor: "pointer",
+              flex: 1,
+            }}
+          >
+            Go to Profile
+          </button>
 
-        <button
-          type="submit"
-          style={{
-            padding: "0.7rem",
-            border: "none",
-            borderRadius: "5px",
-            backgroundColor: "black",
-            color: "white",
-            cursor: "pointer",
-          }}
-        >
-          Login
-        </button>
-      </form>
+          <button
+            onClick={() => handleLogin("home")}
+            style={{
+              padding: "0.7rem",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "black",
+              color: "white",
+              cursor: "pointer",
+              flex: 1,
+            }}
+          >
+            Go to Home
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
