@@ -18,13 +18,33 @@ export default function Register() {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("New User Registered:", formData);
 
-    // 👉 Here you can dispatch to Redux store or call your API
+    try {
+      const res = await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
 
-    navigate("/profile");
+      if (res.ok) {
+        const newUser = await res.json();
+        console.log("✅ New User Registered:", newUser);
+
+        // 👉 Save user ID to localStorage
+        if (newUser.id) {
+          localStorage.setItem("loggedInUserId", newUser.id.toString());
+        }
+
+        // redirect to profile page
+        navigate("/profile");
+      } else {
+        console.error("❌ Failed to register user");
+      }
+    } catch (error) {
+      console.error("❌ Error:", error);
+    }
   };
 
   return (

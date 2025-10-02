@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+// import { Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router,Routes,Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
 import Home from "./Pages/Home";
 import Profile from "./Pages/Profile";
@@ -21,3 +22,7 @@ export default function App() {
     </div>
   );
 }
+
+
+
+

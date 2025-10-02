@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "8f3f",
+      "username": "S'bonelo",
+      "name": "silo",
+      "cellphone": "0609876543",
+      "email": "cbonelo224@gmail.com",
+      "password": "$$Dut021024"
+    },
+    {
+      "id": "60fd",
+      "username": "S'bonelo",
+      "name": "wenzi",
+      "cellphone": "0987654321",
+      "email": "mthimban202@gmail.com",
+      "password": "$$Dut021024"
+    },
+    {
+      "id": "2096",
+      "username": "S'bonelo",
+      "name": "mama",
+      "cellphone": "0606218075",
+      "email": "cbonelo224@gmail.com",
+      "password": "$$Dut021024"
+    }
+  ]
+}
