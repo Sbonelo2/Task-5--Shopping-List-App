@@ -20,7 +20,7 @@ export default function Profile() {
   });
   const [newPassword, setNewPassword] = useState("");
 
-  // Fetch logged-in user from db.json
+
   useEffect(() => {
     const userId = localStorage.getItem("loggedInUserId");
     if (userId) {
@@ -39,7 +39,7 @@ export default function Profile() {
     }
   }, []);
 
-  // Toggle edit mode
+  
   const handleEditToggle = () => {
     setIsEditing(!isEditing);
     if (user) {
@@ -52,13 +52,12 @@ export default function Profile() {
     }
   };
 
-  // Handle profile field changes
+  
   const handleProfileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfileData({ ...profileData, [name]: value });
   };
 
-  // Save profile updates to db.json
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user) return;
@@ -74,14 +73,14 @@ export default function Profile() {
         const updatedUser = await res.json();
         setUser(updatedUser);
         setIsEditing(false);
-        alert("✅ Profile updated successfully!");
+        alert("😍 Profile updated successfully!");
       }
     } catch (err) {
       console.error("❌ Error updating profile:", err);
     }
   };
 
-  // Save password update
+  
   const handlePasswordUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!user || !newPassword.trim()) return;
@@ -95,7 +94,7 @@ export default function Profile() {
 
       if (res.ok) {
         setNewPassword("");
-        alert("✅ Password updated successfully!");
+        alert("😍 Password updated successfully!");
       }
     } catch (err) {
       console.error("❌ Error updating password:", err);

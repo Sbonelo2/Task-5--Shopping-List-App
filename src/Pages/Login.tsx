@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [goToProfile, setGoToProfile] = useState(false); // ✅ user choice
+  const [goToProfile, setGoToProfile] = useState(false); 
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -18,18 +18,18 @@ export default function Login() {
 
       if (data.length > 0) {
         const user = data[0];
-        console.log("✅ Login success:", user);
+        console.log("💘 Login success:", user);
 
         localStorage.setItem("loggedInUserId", user.id);
 
-        // ✅ Decide redirect based on user choice
+       
         if (goToProfile) {
           navigate("/profile");
         } else {
           navigate("/home");
         }
       } else {
-        alert("❌ Invalid credentials");
+        alert("🥺 Invalid credentials");
       }
     } catch (error) {
       console.error("❌ Error logging in:", error);
@@ -87,14 +87,14 @@ export default function Login() {
           }}
         />
 
-        {/* ✅ User chooses where to go */}
+        
         <label style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
           <input
             type="checkbox"
             checked={goToProfile}
             onChange={(e) => setGoToProfile(e.target.checked)}
           />
-          Go to Profile after login
+          dive to Profile
         </label>
 
         <button
