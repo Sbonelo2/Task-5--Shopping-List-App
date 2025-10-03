@@ -1,5 +1,6 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
+// Define item type
 type ShoppingItem = {
   id: string;
   name: string;
@@ -9,14 +10,17 @@ type ShoppingItem = {
   image?: string; // image URL or base64
 };
 
+// Define state type
 type ShoppingListState = {
   items: ShoppingItem[];
 };
 
+// Initial state
 const initialState: ShoppingListState = {
   items: [],
 };
 
+// Slice
 const shoppingListSlice = createSlice({
   name: "shoppingList",
   initialState,
@@ -28,13 +32,19 @@ const shoppingListSlice = createSlice({
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
     updateItem: (state, action: PayloadAction<ShoppingItem>) => {
-      const index = state.items.findIndex((i) => i.id === action.payload.id);
+      // Find index of item
+      const index = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
       if (index !== -1) {
-        state.items[index] = action.payload;
+        state.items[index] = action.payload; // Update item
       }
     },
   },
 });
 
+// Export actions
 export const { addItem, removeItem, updateItem } = shoppingListSlice.actions;
+
+// Export reducer
 export default shoppingListSlice.reducer;

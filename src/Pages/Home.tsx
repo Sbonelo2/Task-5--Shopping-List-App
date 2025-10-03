@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../Store";
-import { addItem, removeItem } from "../Features/HomeSlice";
+import { addItem, removeItem, updateItem } from "../Features/HomeSlice"; // <-- Make sure you have updateItem
 import { v4 as uuidv4 } from "uuid";
-import "../Home.css"; 
+import "../Home.css";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -17,15 +17,25 @@ export default function Home() {
     image: "",
   });
 
-  const [search, setSearch] = useState(""); // Search term
+  const [search, setSearch] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null); // Track the item being edited
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    dispatch(addItem({ id: uuidv4(), ...form }));
+
+    if (editingId) {
+      // Update existing item
+      dispatch(updateItem({ id: editingId, ...form }));
+      setEditingId(null); // Reset editing state
+    } else {
+      // Add new item
+      dispatch(addItem({ id: uuidv4(), ...form }));
+    }
+
     setForm({ name: "", quantity: 1, notes: "", category: "", image: "" });
   };
 
-  // Filter items based on name, category, or notes
+  // Filter items based on search
   const filteredItems = items.filter((item) => {
     const term = search.toLowerCase();
     return (
@@ -34,6 +44,18 @@ export default function Home() {
       (item.notes && item.notes.toLowerCase().includes(term))
     );
   });
+
+  // Edit button handler
+  const handleEdit = (item: typeof form & { id: string }) => {
+    setForm({
+      name: item.name,
+      quantity: item.quantity,
+      notes: item.notes,
+      category: item.category,
+      image: item.image,
+    });
+    setEditingId(item.id);
+  };
 
   return (
     <div className="home-container">
@@ -91,7 +113,7 @@ export default function Home() {
           onChange={(e) => setForm({ ...form, image: e.target.value })}
         />
 
-        <button type="submit">Add Item</button>
+        <button type="submit">{editingId ? "Update Item" : "Add Item"}</button>
       </form>
 
       {/* List */}
@@ -105,9 +127,15 @@ export default function Home() {
             {item.image && (
               <img src={item.image} alt={item.name} width={50} height={50} />
             )}
-            <button onClick={() => dispatch(removeItem(item.id))}>
-              ❌ Remove
-            </button>
+            <div style={{ marginTop: "0.5rem" }}>
+              <button onClick={() => handleEdit(item)}>✏️ Edit</button>
+              <button
+                onClick={() => dispatch(removeItem(item.id))}
+                style={{ marginLeft: "0.5rem" }}
+              >
+                ❌ Remove
+              </button>
+            </div>
           </li>
         ))}
         {filteredItems.length === 0 && <p>No items found.</p>}
