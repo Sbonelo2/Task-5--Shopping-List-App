@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../../Store";
 import { addItem, removeItem } from "../Features/HomeSlice";
 import { v4 as uuidv4 } from "uuid";
-
+import "../Home.css"; 
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -17,15 +17,43 @@ export default function Home() {
     image: "",
   });
 
+  const [search, setSearch] = useState(""); // Search term
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     dispatch(addItem({ id: uuidv4(), ...form }));
     setForm({ name: "", quantity: 1, notes: "", category: "", image: "" });
   };
 
+  // Filter items based on name, category, or notes
+  const filteredItems = items.filter((item) => {
+    const term = search.toLowerCase();
+    return (
+      item.name.toLowerCase().includes(term) ||
+      item.category.toLowerCase().includes(term) ||
+      (item.notes && item.notes.toLowerCase().includes(term))
+    );
+  });
+
   return (
-    <div style={{ padding: "2rem" }}>
+    <div className="home-container">
       <h1>🛒 Shopping Checklist</h1>
+
+      {/* Search Input */}
+      <label
+        htmlFor="search"
+        style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}
+      >
+        Search
+      </label>
+      <input
+        type="text"
+        id="search"
+        className="search-input"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
 
       {/* Form */}
       <form onSubmit={handleSubmit} style={{ marginBottom: "2rem" }}>
@@ -68,10 +96,12 @@ export default function Home() {
 
       {/* List */}
       <ul>
-        {items.map((item) => (
-          <li key={item.id} style={{ marginBottom: "1rem" }}>
-            <strong>{item.name}</strong> (x{item.quantity}) - {item.category}
-            {item.notes && <p>📝 {item.notes}</p>}
+        {filteredItems.map((item) => (
+          <li key={item.id}>
+            <div>
+              <strong>{item.name}</strong> (x{item.quantity}) - {item.category}
+              {item.notes && <p>📝 {item.notes}</p>}
+            </div>
             {item.image && (
               <img src={item.image} alt={item.name} width={50} height={50} />
             )}
@@ -80,6 +110,7 @@ export default function Home() {
             </button>
           </li>
         ))}
+        {filteredItems.length === 0 && <p>No items found.</p>}
       </ul>
     </div>
   );
