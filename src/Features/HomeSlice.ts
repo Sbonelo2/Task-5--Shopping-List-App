@@ -7,20 +7,20 @@ type ShoppingItem = {
   quantity: number;
   notes?: string;
   category: string;
-  image?: string; // image URL or base64
+  image?: string; // image URL 
 };
 
-// Define state type
+
 type ShoppingListState = {
   items: ShoppingItem[];
 };
 
-// Initial state
+
 const initialState: ShoppingListState = {
   items: [],
 };
 
-// Slice
+
 const shoppingListSlice = createSlice({
   name: "shoppingList",
   initialState,
@@ -37,14 +37,14 @@ const shoppingListSlice = createSlice({
         (item) => item.id === action.payload.id
       );
       if (index !== -1) {
-        state.items[index] = action.payload; // Update item
+        state.items[index] = action.payload; 
       }
     },
   },
 });
 
-// Export actions
+
 export const { addItem, removeItem, updateItem } = shoppingListSlice.actions;
 
-// Export reducer
+
 export default shoppingListSlice.reducer;

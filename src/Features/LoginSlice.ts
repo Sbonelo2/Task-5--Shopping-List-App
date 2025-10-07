@@ -5,7 +5,7 @@ export interface LoginState {
   Email: string;
   password: string;
 }
-// Define the initial state using that type
+
 const initialState: LoginState = {
  
   password: "1234567",
@@ -14,7 +14,7 @@ const initialState: LoginState = {
 };
 export const loginSlice = createSlice({
   name: "counter",
-  // `createSlice` will infer the state type from the `initialState` argument
+ 
   initialState,
   reducers: {},
 });

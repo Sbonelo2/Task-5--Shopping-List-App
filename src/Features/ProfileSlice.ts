@@ -21,11 +21,11 @@ const initialState: User = {
   password: "",
 };
 
-// Example async thunk for saving user to server (optional)
+
 export const saveUser = createAsyncThunk(
   "user/saveUser",
   async (userData: User) => {
-    // Replace with your API endpoint
+    
     const response = await axios.post("/api/user", userData);
     return response.data as User;
   }
@@ -36,7 +36,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // Update profile info locally
+    
     updateProfile: (
       state,
       action: PayloadAction<{
@@ -68,8 +68,7 @@ const userSlice = createSlice({
   },
 });
 
-// Export actions
+
 export const { updateProfile, updatePassword } = userSlice.actions;
 
-// Export reducer
 export default userSlice.reducer;
