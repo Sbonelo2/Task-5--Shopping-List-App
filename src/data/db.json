@@ -239,6 +239,22 @@
       "cellphone": "0796396116",
       "email": "mthimban@gmail.com",
       "password": "$$Dut021024"
+    },
+    {
+      "id": "0592",
+      "username": "Mapluthi",
+      "name": "Wenzile",
+      "cellphone": "0876543210",
+      "email": "wenzile07@gmail.com",
+      "password": "20170106"
+    },
+    {
+      "id": "12de",
+      "username": "Maphaya",
+      "name": "Qiniso",
+      "cellphone": "0870987654",
+      "email": "qiniso03@gmail.com",
+      "password": "20060626"
     }
   ]
 }
