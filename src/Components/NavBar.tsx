@@ -13,7 +13,7 @@ export default function NavBar() {
         justifyContent: "space-around",
         alignItems: "center",
         boxSizing: "border-box",
-        borderRadius: "0 0 10px 10px",
+        // borderRadius: "0 0 10px 10px",
       }}
     >
       <Link to="/home" style={{ color: "white", textDecoration: "none" }}>

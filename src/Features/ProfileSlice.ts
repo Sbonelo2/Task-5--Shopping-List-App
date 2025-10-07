@@ -3,7 +3,7 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-// Define user type
+
 export type User = {
   username: string;
   name: string;
@@ -12,7 +12,6 @@ export type User = {
   password: string;
 };
 
-// Initial state
 const initialState: User = {
   username: "",
   name: "",

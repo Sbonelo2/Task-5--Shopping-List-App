@@ -32,7 +32,7 @@ export default function Register() {
         const newUser = await res.json();
         console.log("✅ New User Registered:", newUser);
 
-          // Auto-login after registration
+          // Auto login after registration
         if (newUser.id) {
           localStorage.setItem("loggedInUserId", newUser.id.toString());
         }

@@ -8,11 +8,10 @@ export default function Footer() {
         padding: "1rem",
         marginTop: "2rem",
         height: "3rem",
-        borderRadius: "0 0 10px 10px",
-        
+        // borderRadius: "0 0 10px 10px",
       }}
     >
-      <p>&copy;2025 ShopingServices</p>
+      <p>&copy;2025 Shop'AgainServices🛒...🛒...🛒...🛒</p>
     </div>
   );
 }

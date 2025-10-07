@@ -132,7 +132,7 @@ export default function Profile() {
             borderRadius: "8px",
           }}
         >
-          <h3>Current Info</h3>
+          <h3>Current Information</h3>
           <p>
             <strong>Username:</strong> {user.username}
           </p>

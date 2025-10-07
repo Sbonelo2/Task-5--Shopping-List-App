@@ -1,52 +1,89 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import  { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-export type ShoppingItem = {
+type SubItem = {
   id: string;
   name: string;
   quantity: number;
-  category: string;
   notes?: string;
   image?: string;
   dateAdded: string;
 };
 
-type ShoppingState = {
-  items: ShoppingItem[];
+type ShoppingList = {
+  id: string;
+  name: string;
+  category: string;
+  notes?: string;
+  image?: string;
+  dateAdded: string;
+  items: SubItem[];
 };
 
-const initialState: ShoppingState = {
-  items: [],
+type HomeState = {
+  lists: ShoppingList[];
 };
 
-const shoppingListSlice = createSlice({
-  name: "shoppingList",
+const initialState: HomeState = {
+  lists: [],
+};
+
+const homeSlice = createSlice({
+  name: "home",
   initialState,
   reducers: {
-    addItem: (
+    addList: (state, action: PayloadAction<Omit<ShoppingList, "id">>) => {
+      state.lists.push({ id: uuidv4(), ...action.payload });
+    },
+    updateList: (
       state,
-      action: PayloadAction<Omit<ShoppingItem, "id" | "dateAdded">>
+      action: PayloadAction<{ id: string; updates: Partial<ShoppingList> }>
     ) => {
-      state.items.push({
-        ...action.payload,
-        id: uuidv4(),
-        dateAdded: new Date().toISOString(),
-      });
+      const list = state.lists.find((l) => l.id === action.payload.id);
+      if (list) Object.assign(list, action.payload.updates);
     },
-    updateItem: (state, action: PayloadAction<ShoppingItem>) => {
-      const index = state.items.findIndex(
-        (item) => item.id === action.payload.id
-      );
-      if (index !== -1) state.items[index] = action.payload;
+    removeList: (state, action: PayloadAction<string>) => {
+      state.lists = state.lists.filter((l) => l.id !== action.payload);
     },
-    removeItem: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+
+    addSubItem: (
+      state,
+      action: PayloadAction<{ listId: string; subItem: Omit<SubItem, "id"> }>
+    ) => {
+      const list = state.lists.find((l) => l.id === action.payload.listId);
+      if (list) list.items.push({ id: uuidv4(), ...action.payload.subItem });
+    },
+    updateSubItem: (
+      state,
+      action: PayloadAction<{
+        listId: string;
+        subId: string;
+        updates: Partial<SubItem>;
+      }>
+    ) => {
+      const list = state.lists.find((l) => l.id === action.payload.listId);
+      if (list) {
+        const item = list.items.find((i) => i.id === action.payload.subId);
+        if (item) Object.assign(item, action.payload.updates);
+      }
+    },
+    removeSubItem: (
+      state,
+      action: PayloadAction<{ listId: string; subId: string }>
+    ) => {
+      const list = state.lists.find((l) => l.id === action.payload.listId);
+      if (list)
+        list.items = list.items.filter((i) => i.id !== action.payload.subId);
     },
   },
 });
 
-export const { addItem, updateItem, removeItem } = shoppingListSlice.actions;
-export default shoppingListSlice.reducer;
-
+export const {
+  addList,
+  updateList,
+  removeList,
+  addSubItem,
+  updateSubItem,
+  removeSubItem,
+} = homeSlice.actions;
+export default homeSlice.reducer;
