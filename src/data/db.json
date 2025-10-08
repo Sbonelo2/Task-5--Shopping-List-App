@@ -255,6 +255,14 @@
       "cellphone": "0870987654",
       "email": "qiniso03@gmail.com",
       "password": "060426"
+    },
+    {
+      "id": "a240",
+      "username": "Teenkid",
+      "name": "muzi",
+      "cellphone": "65773795879",
+      "email": "Teenkid@gmail.com",
+      "password": "1234567"
     }
   ]
 }
