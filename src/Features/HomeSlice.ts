@@ -1,89 +1,55 @@
-import  { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { v4 as uuidv4 } from "uuid";
+import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-type SubItem = {
+export interface ShoppingItem {
   id: string;
   name: string;
-  quantity: number;
-  notes?: string;
-  image?: string;
-  dateAdded: string;
-};
-
-type ShoppingList = {
-  id: string;
-  name: string;
+  quantity: string;
   category: string;
   notes?: string;
   image?: string;
-  dateAdded: string;
-  items: SubItem[];
+  date: string;
+}
+
+interface ShoppingState {
+  items: ShoppingItem[];
+  searchKeyword: string;
+  sortBy: "date" | "name" | "category";
+}
+
+const initialState: ShoppingState = {
+  items: [],
+  searchKeyword: "",
+  sortBy: "date",
 };
 
-type HomeState = {
-  lists: ShoppingList[];
-};
-
-const initialState: HomeState = {
-  lists: [],
-};
-
-const homeSlice = createSlice({
-  name: "home",
+const shoppingSlice = createSlice({
+  name: "shopping",
   initialState,
   reducers: {
-    addList: (state, action: PayloadAction<Omit<ShoppingList, "id">>) => {
-      state.lists.push({ id: uuidv4(), ...action.payload });
+    addItem: (state, action: PayloadAction<ShoppingItem>) => {
+      state.items.push(action.payload);
     },
-    updateList: (
-      state,
-      action: PayloadAction<{ id: string; updates: Partial<ShoppingList> }>
-    ) => {
-      const list = state.lists.find((l) => l.id === action.payload.id);
-      if (list) Object.assign(list, action.payload.updates);
-    },
-    removeList: (state, action: PayloadAction<string>) => {
-      state.lists = state.lists.filter((l) => l.id !== action.payload);
-    },
-
-    addSubItem: (
-      state,
-      action: PayloadAction<{ listId: string; subItem: Omit<SubItem, "id"> }>
-    ) => {
-      const list = state.lists.find((l) => l.id === action.payload.listId);
-      if (list) list.items.push({ id: uuidv4(), ...action.payload.subItem });
-    },
-    updateSubItem: (
-      state,
-      action: PayloadAction<{
-        listId: string;
-        subId: string;
-        updates: Partial<SubItem>;
-      }>
-    ) => {
-      const list = state.lists.find((l) => l.id === action.payload.listId);
-      if (list) {
-        const item = list.items.find((i) => i.id === action.payload.subId);
-        if (item) Object.assign(item, action.payload.updates);
+    updateItem: (state, action: PayloadAction<ShoppingItem>) => {
+      const index = state.items.findIndex(
+        (item) => item.id === action.payload.id
+      );
+      if (index !== -1) {
+        state.items[index] = action.payload;
       }
     },
-    removeSubItem: (
-      state,
-      action: PayloadAction<{ listId: string; subId: string }>
-    ) => {
-      const list = state.lists.find((l) => l.id === action.payload.listId);
-      if (list)
-        list.items = list.items.filter((i) => i.id !== action.payload.subId);
+    removeItem: (state, action: PayloadAction<string>) => {
+      state.items = state.items.filter((item) => item.id !== action.payload);
+    },
+    setSearchKeyword: (state, action: PayloadAction<string>) => {
+      state.searchKeyword = action.payload;
+    },
+    sortItems: (state, action: PayloadAction<"date" | "name" | "category">) => {
+      state.sortBy = action.payload;
     },
   },
 });
 
-export const {
-  addList,
-  updateList,
-  removeList,
-  addSubItem,
-  updateSubItem,
-  removeSubItem,
-} = homeSlice.actions;
-export default homeSlice.reducer;
+export const { addItem, updateItem, removeItem, setSearchKeyword, sortItems } =
+  shoppingSlice.actions;
+
+export default shoppingSlice.reducer;
