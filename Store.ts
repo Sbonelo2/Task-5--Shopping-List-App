@@ -10,7 +10,8 @@ export const store = configureStore({
         login: LoginReducer,
         register: RegisterReducer,
         profile: ProfileReducer,
-        home: HomeReducer,
+    home: HomeReducer,
+        
 
   },
 });

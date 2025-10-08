@@ -263,6 +263,14 @@
       "cellphone": "65773795879",
       "email": "Teenkid@gmail.com",
       "password": "1234567"
+    },
+    {
+      "id": "afad",
+      "username": "Thokozani",
+      "name": "Mathoko",
+      "cellphone": "05654786756",
+      "email": "mathoko@gmail.com",
+      "password": "2001234"
     }
   ]
 }

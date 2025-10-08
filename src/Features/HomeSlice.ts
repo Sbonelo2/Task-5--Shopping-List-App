@@ -1,7 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
-// Define sub-item structure
 export interface SubItem {
   id: string;
   name: string;
@@ -12,7 +11,6 @@ export interface SubItem {
   date: string;
 }
 
-// Define card (list) structure
 export interface ShoppingList {
   id: string;
   title: string;
@@ -20,41 +18,52 @@ export interface ShoppingList {
   subItems: SubItem[];
 }
 
-// Define full slice state
 interface HomeState {
   lists: ShoppingList[];
 }
 
+//   saved lists from localStorage
+const loadFromLocalStorage = (): ShoppingList[] => {
+  try {
+    const data = localStorage.getItem("shoppingLists");
+    return data ? JSON.parse(data) : [];
+  } catch {
+    return [];
+  }
+};
+
+//  Save lists to localStorage as JSON
+const saveToLocalStorage = (lists: ShoppingList[]) => {
+  try {
+    localStorage.setItem("shoppingLists", JSON.stringify(lists));
+  } catch (err) {
+    console.error("Error saving to localStorage", err);
+  }
+};
+
 const initialState: HomeState = {
-  lists: [],
+  lists: loadFromLocalStorage(),
 };
 
 export const homeSlice = createSlice({
   name: "home",
   initialState,
   reducers: {
-    // 🟢 Add a new shopping card
     addList: (state, action: PayloadAction<ShoppingList>) => {
       state.lists.push(action.payload);
+      saveToLocalStorage(state.lists);
     },
-
-    // 🟠 Update a card’s title
     updateList: (state, action: PayloadAction<ShoppingList>) => {
       const index = state.lists.findIndex((l) => l.id === action.payload.id);
       if (index !== -1) {
-        state.lists[index] = {
-          ...state.lists[index],
-          title: action.payload.title,
-        };
+        state.lists[index] = { ...state.lists[index], ...action.payload };
+        saveToLocalStorage(state.lists);
       }
     },
-
-    // 🔴 Remove a shopping card
     removeList: (state, action: PayloadAction<string>) => {
       state.lists = state.lists.filter((l) => l.id !== action.payload);
+      saveToLocalStorage(state.lists);
     },
-
-    // 🟢 Add a sub-item to a card
     addSubItem: (
       state,
       action: PayloadAction<{ parentId: string; subItem: SubItem }>
@@ -62,10 +71,9 @@ export const homeSlice = createSlice({
       const card = state.lists.find((l) => l.id === action.payload.parentId);
       if (card) {
         card.subItems.push(action.payload.subItem);
+        saveToLocalStorage(state.lists);
       }
     },
-
-    // 🟠 Update a sub-item within a card
     updateSubItem: (
       state,
       action: PayloadAction<{ parentId: string; subItem: SubItem }>
@@ -76,11 +84,10 @@ export const homeSlice = createSlice({
         const subIndex = card.subItems.findIndex((s) => s.id === subItem.id);
         if (subIndex !== -1) {
           card.subItems[subIndex] = subItem;
+          saveToLocalStorage(state.lists);
         }
       }
     },
-
-    // 🔴 Remove a sub-item from a card
     removeSubItem: (
       state,
       action: PayloadAction<{ parentId: string; subId: string }>
@@ -89,12 +96,12 @@ export const homeSlice = createSlice({
       const card = state.lists.find((l) => l.id === parentId);
       if (card) {
         card.subItems = card.subItems.filter((s) => s.id !== subId);
+        saveToLocalStorage(state.lists);
       }
     },
   },
 });
 
-// Export actions
 export const {
   addList,
   updateList,
@@ -104,5 +111,4 @@ export const {
   removeSubItem,
 } = homeSlice.actions;
 
-// Export reducer
 export default homeSlice.reducer;
