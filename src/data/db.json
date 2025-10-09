@@ -271,6 +271,14 @@
       "cellphone": "05654786756",
       "email": "mathoko@gmail.com",
       "password": "2001234"
+    },
+    {
+      "id": "b570",
+      "username": "sabza",
+      "name": "Sabelo",
+      "cellphone": "0987654321",
+      "email": "sabelo@gmail.com",
+      "password": "484749400"
     }
   ]
 }
