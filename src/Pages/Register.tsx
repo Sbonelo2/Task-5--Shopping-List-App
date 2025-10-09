@@ -37,8 +37,8 @@ export default function Register() {
           localStorage.setItem("loggedInUserId", newUser.id.toString());
         }
 
-        // redirect to profile page
-        navigate("/profile");
+        // redirect to home page
+        navigate("/home");
       } else {
         console.error("❌ Failed to register user");
       }
@@ -155,6 +155,16 @@ export default function Register() {
         >
           Register
         </button>
+
+        <p style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}>
+          Already have an account?{" "}
+          <a
+            href="/login"
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+          >
+            Login here
+          </a>
+        </p>
       </form>
     </div>
   );

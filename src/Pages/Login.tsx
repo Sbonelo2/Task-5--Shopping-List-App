@@ -160,6 +160,16 @@ export default function Login() {
             Go to Home
           </button>
         </div>
+
+        <p style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}>
+          Don't have an account?{" "}
+          <a
+            href="/registration"
+            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+          >
+            Register here
+          </a>
+        </p>
       </div>
     </div>
   );
