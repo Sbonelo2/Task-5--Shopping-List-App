@@ -1,4 +1,4 @@
-import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, type PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
 import { v4 as uuidv4 } from "uuid";
 
 export interface SubItem {
@@ -16,33 +16,69 @@ export interface ShoppingList {
   title: string;
   date: string;
   subItems: SubItem[];
+  userId?: string;
 }
 
 interface HomeState {
   lists: ShoppingList[];
+  loading: boolean;
+  error: string | null;
 }
 
-//   saved lists from localStorage
-const loadFromLocalStorage = (): ShoppingList[] => {
+const API_URL = "http://localhost:5000/shoppingLists";
+
+// Fetch all shopping lists from JSON server
+export const fetchLists = createAsyncThunk(
+  "home/fetchLists",
+  async () => {
+    const response = await fetch(API_URL);
+    const data = await response.json();
+    return data as ShoppingList[];
+  }
+);
+
+// Save list to JSON server
+const saveToServer = async (list: ShoppingList) => {
   try {
-    const data = localStorage.getItem("shoppingLists");
-    return data ? JSON.parse(data) : [];
-  } catch {
-    return [];
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(list),
+    });
+    return await response.json();
+  } catch (err) {
+    console.error("Error saving to server", err);
   }
 };
 
-//  Save lists to localStorage as JSON
-const saveToLocalStorage = (lists: ShoppingList[]) => {
+// Update list on JSON server
+const updateOnServer = async (list: ShoppingList) => {
   try {
-    localStorage.setItem("shoppingLists", JSON.stringify(lists));
+    await fetch(`${API_URL}/${list.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(list),
+    });
   } catch (err) {
-    console.error("Error saving to localStorage", err);
+    console.error("Error updating on server", err);
+  }
+};
+
+// Delete list from JSON server
+const deleteFromServer = async (id: string) => {
+  try {
+    await fetch(`${API_URL}/${id}`, {
+      method: "DELETE",
+    });
+  } catch (err) {
+    console.error("Error deleting from server", err);
   }
 };
 
 const initialState: HomeState = {
-  lists: loadFromLocalStorage(),
+  lists: [],
+  loading: false,
+  error: null,
 };
 
 export const homeSlice = createSlice({
@@ -51,18 +87,18 @@ export const homeSlice = createSlice({
   reducers: {
     addList: (state, action: PayloadAction<ShoppingList>) => {
       state.lists.push(action.payload);
-      saveToLocalStorage(state.lists);
+      saveToServer(action.payload);
     },
     updateList: (state, action: PayloadAction<ShoppingList>) => {
       const index = state.lists.findIndex((l) => l.id === action.payload.id);
       if (index !== -1) {
         state.lists[index] = { ...state.lists[index], ...action.payload };
-        saveToLocalStorage(state.lists);
+        updateOnServer(state.lists[index]);
       }
     },
     removeList: (state, action: PayloadAction<string>) => {
       state.lists = state.lists.filter((l) => l.id !== action.payload);
-      saveToLocalStorage(state.lists);
+      deleteFromServer(action.payload);
     },
     addSubItem: (
       state,
@@ -71,7 +107,7 @@ export const homeSlice = createSlice({
       const card = state.lists.find((l) => l.id === action.payload.parentId);
       if (card) {
         card.subItems.push(action.payload.subItem);
-        saveToLocalStorage(state.lists);
+        updateOnServer(card);
       }
     },
     updateSubItem: (
@@ -84,7 +120,7 @@ export const homeSlice = createSlice({
         const subIndex = card.subItems.findIndex((s) => s.id === subItem.id);
         if (subIndex !== -1) {
           card.subItems[subIndex] = subItem;
-          saveToLocalStorage(state.lists);
+          updateOnServer(card);
         }
       }
     },
@@ -96,9 +132,24 @@ export const homeSlice = createSlice({
       const card = state.lists.find((l) => l.id === parentId);
       if (card) {
         card.subItems = card.subItems.filter((s) => s.id !== subId);
-        saveToLocalStorage(state.lists);
+        updateOnServer(card);
       }
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchLists.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchLists.fulfilled, (state, action) => {
+        state.loading = false;
+        state.lists = action.payload;
+      })
+      .addCase(fetchLists.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to fetch lists";
+      });
   },
 });
 

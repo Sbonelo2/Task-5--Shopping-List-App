@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../../Store";
+import type { RootState, AppDispatch } from "../../Store";
 import {
   addList,
   removeList,
@@ -8,13 +8,20 @@ import {
   addSubItem,
   updateSubItem,
   removeSubItem,
+  fetchLists,
 } from "../Features/HomeSlice";
 import { v4 as uuidv4 } from "uuid";
 import "../Home.css";
 
 export default function AdvancedShoppingList() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector((state: RootState) => state.home.lists);
+  const loading = useSelector((state: RootState) => state.home.loading);
+
+  // Fetch lists on component mount
+  useEffect(() => {
+    dispatch(fetchLists());
+  }, [dispatch]);
 
   // 🔍 Search
   const [searchQuery, setSearchQuery] = useState("");
@@ -40,11 +47,13 @@ export default function AdvancedShoppingList() {
   // ✅ Add new list
   const handleAddCard = () => {
     if (!newCardTitle.trim()) return;
+    const userId = localStorage.getItem("loggedInUserId") || "";
     const newCard = {
       id: uuidv4(),
       title: newCardTitle,
       date: new Date().toISOString(),
       subItems: [],
+      userId,
     };
     dispatch(addList(newCard));
     setNewCardTitle("");
@@ -157,6 +166,15 @@ export default function AdvancedShoppingList() {
     navigator.clipboard.writeText(shareText);
     alert("✅ List copied to clipboard! You can now share it anywhere.");
   };
+
+  if (loading) {
+    return (
+      <div className="max-w-5xl mx-auto p-4 text-center">
+        <h1 className="text-3xl font-bold mb-6">🛍️ Shop'Again</h1>
+        <p>Loading your shopping lists...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-5xl mx-auto p-4">
