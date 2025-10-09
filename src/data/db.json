@@ -279,6 +279,30 @@
       "cellphone": "0987654321",
       "email": "sabelo@gmail.com",
       "password": "484749400"
+    },
+    {
+      "id": "469a",
+      "username": "utyjt",
+      "name": "yretyh",
+      "cellphone": "09876543",
+      "email": "fccjgh@gmail.com",
+      "password": "erfr435tg"
+    },
+    {
+      "id": "b979",
+      "username": "Mshini",
+      "name": "snenhlanhla",
+      "cellphone": "34675785468",
+      "email": "Mshini@gmail.com",
+      "password": "edrf32rwefe"
+    },
+    {
+      "id": "2438",
+      "username": "Bhonobho",
+      "name": "Mtolo",
+      "cellphone": "098765432",
+      "email": "Mtolo@gmail.com",
+      "password": "43tgr5y"
     }
   ],
   "shoppingLists": [
@@ -307,6 +331,66 @@
         }
       ],
       "userId": "afad"
+    },
+    {
+      "id": "90c21ff6-4c0e-4662-b56f-b4fd10c2ae48",
+      "title": "amakhekhe",
+      "date": "2025-10-09T13:28:17.803Z",
+      "subItems": [
+        {
+          "id": "cbe5cb8f-fcfb-4f9f-8c47-da944fe811ea",
+          "name": "omshado",
+          "quantity": "5",
+          "category": "",
+          "notes": "",
+          "image": "https://sallysbakingaddiction.com/wp-content/uploads/2013/04/triple-chocolate-cake-4.jpg",
+          "date": "2025-10-09T13:29:35.188Z"
+        }
+      ],
+      "userId": "b979"
+    },
+    {
+      "id": "2db7571a-a621-4dc5-aca8-029bd9971dea",
+      "title": "drinks",
+      "date": "2025-10-09T13:29:51.787Z",
+      "subItems": [
+        {
+          "id": "d2403bbe-a093-4bec-bc98-538619dabd44",
+          "name": "ibhiya",
+          "quantity": "48",
+          "category": "",
+          "notes": "",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQm6lDF9LgCkiPN1GW7Nsb_i9tG4eZ21N_YQQ&s",
+          "date": "2025-10-09T13:30:33.507Z"
+        }
+      ],
+      "userId": "b979"
+    },
+    {
+      "id": "84ea39f7-206c-4458-9ba3-d01b700172a9",
+      "title": "cars",
+      "date": "2025-10-09T13:33:37.035Z",
+      "subItems": [
+        {
+          "id": "471bb0a3-3ddb-423d-bc0b-092817ec0dc2",
+          "name": "umese",
+          "quantity": "1",
+          "category": "",
+          "notes": "",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRMJpnWNFrYPXAtj8HhBNcwJtlLVhtUFyf03w&s",
+          "date": "2025-10-09T13:34:21.771Z"
+        },
+        {
+          "id": "56413982-4252-449f-8b0e-a87f2a4d62d7",
+          "name": "ford",
+          "quantity": "2",
+          "category": "",
+          "notes": "",
+          "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQiLWNWBGuyvi-cOeBaOZkIF-zoO7upLoUYhQ&s",
+          "date": "2025-10-09T13:45:34.820Z"
+        }
+      ],
+      "userId": "2438"
     }
   ]
 }
