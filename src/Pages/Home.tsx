@@ -20,7 +20,8 @@ export default function AdvancedShoppingList() {
 
   // Fetch lists on component mount
   useEffect(() => {
-    dispatch(fetchLists());
+    const userId = localStorage.getItem("loggedInUserId") || "";
+    dispatch(fetchLists(userId));
   }, [dispatch]);
 
   // 🔍 Search

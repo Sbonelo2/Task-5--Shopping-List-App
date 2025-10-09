@@ -27,11 +27,11 @@ interface HomeState {
 
 const API_URL = "http://localhost:5000/shoppingLists";
 
-// Fetch all shopping lists from JSON server
+// Fetch shopping lists for a specific user from JSON server
 export const fetchLists = createAsyncThunk(
   "home/fetchLists",
-  async () => {
-    const response = await fetch(API_URL);
+  async (userId: string) => {
+    const response = await fetch(`${API_URL}?userId=${userId}`);
     const data = await response.json();
     return data as ShoppingList[];
   }
