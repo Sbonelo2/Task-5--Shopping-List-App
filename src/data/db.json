@@ -281,5 +281,32 @@
       "password": "484749400"
     }
   ],
-  "shoppingLists": []
+  "shoppingLists": [
+    {
+      "id": "6de0360a-91e0-4e28-b0fc-06473f74debc",
+      "title": "dsfb",
+      "date": "2025-10-09T12:43:21.972Z",
+      "subItems": [
+        {
+          "id": "e747f4ed-1d8d-4a94-8069-89a2aa2a4aaa",
+          "name": "fdb",
+          "quantity": "5r",
+          "category": "",
+          "notes": "",
+          "image": "",
+          "date": "2025-10-09T12:43:25.117Z"
+        },
+        {
+          "id": "e5de8d46-f472-4adc-82a2-b4a152ecd3ce",
+          "name": "dfg",
+          "quantity": "fg",
+          "category": "",
+          "notes": "",
+          "image": "",
+          "date": "2025-10-09T12:43:29.228Z"
+        }
+      ],
+      "userId": "afad"
+    }
+  ]
 }

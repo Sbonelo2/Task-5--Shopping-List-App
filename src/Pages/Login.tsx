@@ -28,6 +28,12 @@ export default function Login() {
   }, []);
 
   const handleLogin = async (destination: "home" | "profile") => {
+    // Validate inputs
+    if (!username.trim() || !password.trim()) {
+      alert("⚠️ Please enter both username and password");
+      return;
+    }
+
     try {
       const res = await fetch(
         `http://localhost:5000/users?username=${username}&password=${password}`
@@ -38,17 +44,21 @@ export default function Login() {
         const user = data[0];
         console.log("💘 Login success:", user);
 
-        localStorage.setItem("loggedInUserId", user.id.toString());
+        localStorage.setItem("loggedInUserId", user.id);
         setCurrentUser(user); // update state
 
-       
-        if (destination === "profile") navigate("/profile");
-        else navigate("/home");
+        // Navigate to destination
+        if (destination === "profile") {
+          navigate("/profile");
+        } else {
+          navigate("/home");
+        }
       } else {
         alert("🥺 Invalid username or password");
       }
     } catch (error) {
       console.error("❌ Error logging in:", error);
+      alert("❌ Error connecting to server. Make sure JSON server is running on port 5000");
     }
   };
 
@@ -157,7 +167,7 @@ export default function Login() {
               flex: 1,
             }}
           >
-            Go to Home
+            Go to ShopAgain
           </button>
         </div>
 

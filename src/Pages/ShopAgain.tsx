@@ -13,7 +13,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import "../Home.css";
 
-export default function AdvancedShoppingList() {
+export default function ShopAgain() {
   const dispatch = useDispatch<AppDispatch>();
   const lists = useSelector((state: RootState) => state.home.lists);
   const loading = useSelector((state: RootState) => state.home.loading);

@@ -1,9 +1,10 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import NavBar from "./Components/NavBar";
-import Home from "./Pages/Home";
+import ShopAgain from "./Pages/ShopAgain";
 import Profile from "./Pages/Profile";
 import Registration from "./Pages/Register";
 import Login from "./Pages/Login";
+import Landing from "./Pages/Landing";
 import Footer from "./Components/Footer";
 import ProtectedRoute from "./Components/ProtectedRoute";
 
@@ -13,8 +14,8 @@ export default function App() {
     <div>
       <NavBar />
       <Routes>
-        {/* Default route redirects to login */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        {/* Landing page */}
+        <Route path="/" element={<Landing />} />
         
         {/* Public routes */}
         <Route path="/registration" element={<Registration />} />
@@ -25,7 +26,7 @@ export default function App() {
           path="/home"
           element={
             <ProtectedRoute>
-              <Home />
+              <ShopAgain />
             </ProtectedRoute>
           }
         />

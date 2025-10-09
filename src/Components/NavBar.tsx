@@ -17,7 +17,7 @@ export default function NavBar() {
       }}
     >
       <Link to="/home" style={{ color: "white", textDecoration: "none" }}>
-        Home
+        ShopAgain
       </Link>
       <Link
         to="/registration"
