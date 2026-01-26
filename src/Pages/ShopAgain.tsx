@@ -111,13 +111,31 @@ export default function ShopAgain() {
         alert("❌ Error reading file. Please try again.");
       };
       reader.readAsDataURL(file);
-    } else if (subForm.imageOption === "url") {
+    }
+  };
+
+  // Handle URL image input
+  const handleImageUrlChange = () => {
+    if (subForm.imageOption === "url" && subForm.image.trim()) {
       // Validate URL format
       try {
         new URL(subForm.image);
-        setImagePreview(subForm.image);
+        // Check if URL is accessible
+        const img = new Image();
+        img.onload = () => {
+          setImagePreview(subForm.image);
+        };
+        img.onerror = () => {
+          alert(
+            "❌ Image URL is not accessible or invalid. Please check the URL.",
+          );
+          setImagePreview(null);
+        };
+        img.src = subForm.image;
       } catch (error) {
-        alert("❌ Invalid URL format. Please enter a valid image URL.");
+        alert(
+          "❌ Invalid URL format. Please enter a valid image URL (e.g., https://example.com/image.jpg)",
+        );
         setImagePreview(null);
       }
     }
@@ -219,7 +237,7 @@ export default function ShopAgain() {
         />
         <button
           onClick={() => setSearchQuery("")}
-          className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
         >
           Clear
         </button>
@@ -496,7 +514,7 @@ export default function ShopAgain() {
                             image: e.target.value,
                           })
                         }
-                        onBlur={handleImageChange}
+                        onBlur={handleImageUrlChange}
                         className="border p-2 rounded w-full"
                       />
                     )}
