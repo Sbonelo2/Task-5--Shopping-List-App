@@ -295,7 +295,7 @@ export default function ShopAgain() {
                       </button>
                       <button
                         onClick={() => handleShareList(list.id)}
-                        className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm"
+                        className="bg-black hover:bg-gray-800 text-black px-3 py-1 rounded text-sm border border-gray-300"
                       >
                         Share
                       </button>
