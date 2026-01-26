@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 type User = {
   id: number;
@@ -36,7 +36,7 @@ export default function Login() {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/users?username=${username}&password=${password}`
+        `http://localhost:5000/users?username=${username}&password=${password}`,
       );
       const data = await res.json();
 
@@ -58,7 +58,9 @@ export default function Login() {
       }
     } catch (error) {
       console.error("❌ Error logging in:", error);
-      alert("❌ Error connecting to server. Make sure JSON server is running on port 5000");
+      alert(
+        "❌ Error connecting to server. Make sure JSON server is running on port 5000",
+      );
     }
   };
 
@@ -171,14 +173,20 @@ export default function Login() {
           </button>
         </div>
 
-        <p style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}>
+        <p
+          style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}
+        >
           Don't have an account?{" "}
-          <a
-            href="/registration"
-            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+          <Link
+            to="/registration"
+            style={{
+              color: "blue",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
           >
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>

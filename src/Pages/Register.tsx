@@ -1,6 +1,6 @@
 import type React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -21,6 +21,18 @@ export default function Register() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Validate all fields
+    if (
+      !formData.username.trim() ||
+      !formData.name.trim() ||
+      !formData.email.trim() ||
+      !formData.cellphone.trim() ||
+      !formData.password.trim()
+    ) {
+      alert("⚠️ Please fill in all fields");
+      return;
+    }
+
     try {
       const res = await fetch("http://localhost:5000/users", {
         method: "POST",
@@ -32,7 +44,7 @@ export default function Register() {
         const newUser = await res.json();
         console.log("✅ New User Registered:", newUser);
 
-          // Auto login after registration
+        // Auto login after registration
         if (newUser.id) {
           localStorage.setItem("loggedInUserId", newUser.id.toString());
         }
@@ -41,9 +53,13 @@ export default function Register() {
         navigate("/home");
       } else {
         console.error("❌ Failed to register user");
+        alert("❌ Failed to register. Please try again or contact support.");
       }
     } catch (error) {
       console.error("❌ Error:", error);
+      alert(
+        "❌ Error connecting to server. Make sure JSON server is running on port 5000",
+      );
     }
   };
 
@@ -151,19 +167,36 @@ export default function Register() {
             backgroundColor: "black",
             color: "white",
             cursor: "pointer",
+            fontWeight: "600",
+            fontSize: "1rem",
+            transition: "all 0.3s ease",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#333";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "black";
+            e.currentTarget.style.transform = "translateY(0)";
           }}
         >
           Register
         </button>
 
-        <p style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}>
+        <p
+          style={{ textAlign: "center", marginTop: "1rem", fontSize: "0.9rem" }}
+        >
           Already have an account?{" "}
-          <a
-            href="/login"
-            style={{ color: "blue", textDecoration: "underline", cursor: "pointer" }}
+          <Link
+            to="/login"
+            style={{
+              color: "blue",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
           >
             Login here
-          </a>
+          </Link>
         </p>
       </form>
     </div>
