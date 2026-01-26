@@ -22,15 +22,19 @@ A modern shopping list application built with React, TypeScript, and Vite. Featu
 ## 🔧 Installation
 
 1. Clone the repository
+```bash
+#Clone the repository using
+https://github.com/Sbonelo2/Task-5--Shopping-List-App
+
+# Navigate into the project directory
+cd Task-5--Shopping-List-App
+```
+
 2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. Install json-server globally (if not already installed):
-```bash
-npm install -g json-server
-```
 
 ## 🏃 Running the App
 
