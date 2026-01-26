@@ -70,7 +70,7 @@ export default function ShopAgain() {
   const handleUpdateCard = (id: string) => {
     if (!editedCardTitle.trim()) return;
     dispatch(
-      updateList({ id, title: editedCardTitle, date: "", subItems: [] })
+      updateList({ id, title: editedCardTitle, date: "", subItems: [] }),
     );
     setEditingCardId(null);
     setEditedCardTitle("");
@@ -81,18 +81,45 @@ export default function ShopAgain() {
     dispatch(removeList(id));
   };
 
-  // 📸 Image handling
+  // 📸 Image handling - specific to current form
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (subForm.imageOption === "upload" && e.target.files?.[0]) {
       const file = e.target.files[0];
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert("❌ File size too large! Maximum 5MB allowed.");
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        alert("❌ Please upload a valid image file!");
+        return;
+      }
+
       const reader = new FileReader();
       reader.onloadend = () => {
+        // Only update for the current form's list
         setImagePreview(reader.result as string);
-        setSubForm({ ...subForm, image: reader.result as string });
+        setSubForm({
+          ...subForm,
+          image: reader.result as string,
+        });
+      };
+      reader.onerror = () => {
+        alert("❌ Error reading file. Please try again.");
       };
       reader.readAsDataURL(file);
     } else if (subForm.imageOption === "url") {
-      setImagePreview(subForm.image);
+      // Validate URL format
+      try {
+        new URL(subForm.image);
+        setImagePreview(subForm.image);
+      } catch (error) {
+        alert("❌ Invalid URL format. Please enter a valid image URL.");
+        setImagePreview(null);
+      }
     }
   };
 
@@ -113,7 +140,7 @@ export default function ShopAgain() {
 
     if (subForm.id) {
       dispatch(
-        updateSubItem({ parentId: subForm.parentId, subItem: newSubItem })
+        updateSubItem({ parentId: subForm.parentId, subItem: newSubItem }),
       );
     } else {
       dispatch(addSubItem({ parentId: subForm.parentId, subItem: newSubItem }));
@@ -145,7 +172,7 @@ export default function ShopAgain() {
     const query = searchQuery.toLowerCase();
     const inTitle = list.title.toLowerCase().includes(query);
     const inCategory = list.subItems.some((item) =>
-      item.category.toLowerCase().includes(query)
+      item.category.toLowerCase().includes(query),
     );
     return inTitle || inCategory;
   });
@@ -160,7 +187,7 @@ export default function ShopAgain() {
         (i) =>
           `- ${i.name} (${i.quantity}) [${i.category}] ${
             i.notes ? "- " + i.notes : ""
-          }`
+          }`,
       )
       .join("\n")}`;
 
@@ -341,7 +368,16 @@ export default function ShopAgain() {
               </ul>
 
               {/* Add / Edit Sub-item Form */}
-              <form onSubmit={handleSubItemSubmit} className="border-t pt-3">
+              <form
+                onSubmit={handleSubItemSubmit}
+                className="border-t pt-3"
+                onFocus={() => {
+                  // Clear preview if switching to a different list's form
+                  if (subForm.parentId && subForm.parentId !== list.id) {
+                    setImagePreview(null);
+                  }
+                }}
+              >
                 <h3 className="font-semibold mb-2 text-gray-700">
                   {subForm.id && subForm.parentId === list.id
                     ? "Edit Item"
@@ -352,7 +388,23 @@ export default function ShopAgain() {
                   <input
                     type="text"
                     placeholder="Name"
-                    value={subForm.name}
+                    value={subForm.parentId === list.id ? subForm.name : ""}
+                    onFocus={() => {
+                      // Clear preview and reset form if switching to a different list
+                      if (subForm.parentId && subForm.parentId !== list.id) {
+                        setImagePreview(null);
+                        setSubForm({
+                          parentId: list.id,
+                          id: "",
+                          name: "",
+                          quantity: "",
+                          category: "",
+                          notes: "",
+                          image: "",
+                          imageOption: "none",
+                        });
+                      }
+                    }}
                     onChange={(e) =>
                       setSubForm({
                         ...subForm,
@@ -365,80 +417,102 @@ export default function ShopAgain() {
                   <input
                     type="text"
                     placeholder="Quantity"
-                    value={subForm.quantity}
+                    value={subForm.parentId === list.id ? subForm.quantity : ""}
                     onChange={(e) =>
-                      setSubForm({ ...subForm, quantity: e.target.value })
+                      setSubForm({
+                        ...subForm,
+                        quantity: e.target.value,
+                        parentId: list.id,
+                      })
                     }
                     className="border p-2 rounded"
                   />
                   <input
                     type="text"
                     placeholder="Category"
-                    value={subForm.category}
+                    value={subForm.parentId === list.id ? subForm.category : ""}
                     onChange={(e) =>
-                      setSubForm({ ...subForm, category: e.target.value })
+                      setSubForm({
+                        ...subForm,
+                        category: e.target.value,
+                        parentId: list.id,
+                      })
                     }
                     className="border p-2 rounded"
                   />
                   <input
                     type="text"
                     placeholder="Notes (optional)"
-                    value={subForm.notes}
+                    value={subForm.parentId === list.id ? subForm.notes : ""}
                     onChange={(e) =>
-                      setSubForm({ ...subForm, notes: e.target.value })
+                      setSubForm({
+                        ...subForm,
+                        notes: e.target.value,
+                        parentId: list.id,
+                      })
                     }
                     className="border p-2 rounded"
                   />
                 </div>
 
-                {/* Image Upload */}
-                <div className="flex gap-2 items-center">
-                  <select
-                    value={subForm.imageOption}
-                    onChange={(e) =>
-                      setSubForm({
-                        ...subForm,
-                        imageOption: e.target.value as
-                          | "none"
-                          | "upload"
-                          | "url",
-                        image: "",
-                      })
-                    }
-                    className="border p-2 rounded"
-                  >
-                    <option value="none">No Image</option>
-                    <option value="upload">Upload</option>
-                    <option value="url">From URL</option>
-                  </select>
-
-                  {subForm.imageOption === "upload" && (
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                    />
-                  )}
-                  {subForm.imageOption === "url" && (
-                    <input
-                      type="text"
-                      placeholder="Image URL"
-                      value={subForm.image}
+                {/* Image Upload - Only active for this specific list */}
+                {subForm.parentId === list.id && (
+                  <div className="flex gap-2 items-center mb-2">
+                    <select
+                      value={subForm.imageOption}
                       onChange={(e) =>
-                        setSubForm({ ...subForm, image: e.target.value })
+                        setSubForm({
+                          ...subForm,
+                          imageOption: e.target.value as
+                            | "none"
+                            | "upload"
+                            | "url",
+                          image: "",
+                        })
                       }
-                      onBlur={handleImageChange}
-                      className="border p-2 rounded w-full"
-                    />
-                  )}
-                </div>
+                      className="border p-2 rounded"
+                    >
+                      <option value="none">No Image</option>
+                      <option value="upload">📤 Upload Image</option>
+                      <option value="url">🔗 Image URL</option>
+                    </select>
 
-                {imagePreview && (
-                  <div className="mt-2 flex flex-col items-start">
+                    {subForm.imageOption === "upload" && (
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="flex-1"
+                      />
+                    )}
+                    {subForm.imageOption === "url" && (
+                      <input
+                        type="text"
+                        placeholder="Paste image URL here..."
+                        value={subForm.image}
+                        onChange={(e) =>
+                          setSubForm({
+                            ...subForm,
+                            image: e.target.value,
+                          })
+                        }
+                        onBlur={handleImageChange}
+                        className="border p-2 rounded w-full"
+                      />
+                    )}
+                  </div>
+                )}
+
+                {/* Image Preview - Only show if this form is active */}
+                {subForm.parentId === list.id && imagePreview && (
+                  <div className="mt-2 mb-2">
+                    <p className="text-xs text-gray-600 mb-1">
+                      📸 Image Preview:
+                    </p>
                     <img
                       src={imagePreview}
-                      alt="Preview"
-                      className="h-24 w-24 object-cover rounded-md border shadow"
+                      alt="Preview for {list.title}"
+                      className="h-24 w-24 object-cover rounded-md border-2 shadow"
                     />
                     <button
                       type="button"
@@ -446,20 +520,21 @@ export default function ShopAgain() {
                         setImagePreview(null);
                         setSubForm({ ...subForm, image: "" });
                       }}
-                      className="text-xs mt-1 text-red-500"
+                      className="text-xs mt-1 text-red-500 hover:text-red-700 font-semibold"
                     >
-                      Remove Image
+                      ✕ Remove Image
                     </button>
                   </div>
                 )}
 
                 <button
                   type="submit"
-                  className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded w-full"
+                  disabled={!subForm.parentId || subForm.parentId !== list.id}
+                  className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {subForm.id && subForm.parentId === list.id
-                    ? "Update Item"
-                    : "Add Item"}
+                  {subForm.parentId === list.id && subForm.id && subForm.id
+                    ? "💾 Update Item"
+                    : "➕ Add Item"}
                 </button>
               </form>
             </div>
