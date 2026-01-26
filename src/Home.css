@@ -493,30 +493,71 @@ button:focus {
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
-@media (max-width: 768px) {
+/* Extra Large Screens (1200px and up) */
+@media (min-width: 1200px) {
+  .max-w-5xl {
+    max-width: 1200px;
+  }
+
+  .p-4 {
+    padding: 2.5rem;
+  }
+
+  h1.text-3xl {
+    font-size: 3.5rem;
+  }
+
+  .grid {
+    gap: 2rem;
+  }
+}
+
+/* Large Screens (1024px - 1199px) */
+@media (min-width: 1024px) and (max-width: 1199px) {
+  .max-w-5xl {
+    max-width: 1000px;
+  }
+
+  .p-4 {
+    padding: 2rem;
+  }
+
+  h1.text-3xl {
+    font-size: 3rem;
+  }
+}
+
+/* Tablets (768px - 1023px) */
+@media (min-width: 768px) and (max-width: 1023px) {
   .sm\:grid-cols-2 {
     grid-template-columns: 1fr;
   }
 
   .sm\:flex-row {
-    flex-direction: row;
+    flex-direction: column;
   }
 
   h1.text-3xl {
-    font-size: 2rem;
+    font-size: 2.25rem;
+    margin-bottom: 1.75rem;
   }
 
   .p-4 {
-    padding: 1rem;
+    padding: 1.5rem;
   }
 
   .gap-6 {
-    gap: 1rem;
+    gap: 1.25rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   button {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.85rem;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
   }
 
   input[type="text"],
@@ -525,27 +566,338 @@ button:focus {
   input[type="number"],
   input[type="tel"],
   select {
-    padding: 0.6rem 0.75rem;
-    font-size: 0.875rem;
+    padding: 0.65rem 0.875rem;
+    font-size: 0.9rem;
+  }
+
+  .rounded-2xl {
+    border-radius: 12px;
+    padding: 1.5rem;
   }
 }
 
-@media (max-width: 640px) {
+/* Small Tablets/Large Phones (641px - 767px) */
+@media (min-width: 641px) and (max-width: 767px) {
   .max-w-5xl {
     max-width: 95%;
   }
 
+  .p-4 {
+    padding: 1.25rem;
+  }
+
+  h1.text-3xl {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .sm\:flex-row {
+    flex-direction: column;
+  }
+
+  button {
+    padding: 0.6rem 1.15rem;
+    font-size: 0.875rem;
+    border-radius: 10px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  select {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.875rem;
+    border-radius: 10px;
+  }
+
+  .rounded-2xl {
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  h2.text-xl {
+    font-size: 1.5rem;
+  }
+
+  h3.font-semibold {
+    font-size: 1.1rem;
+  }
+}
+
+/* Mobile Phones (max-width: 640px) */
+@media (max-width: 640px) {
+  .max-w-5xl {
+    max-width: 100%;
+  }
+
   .grid {
     grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .sm\:flex-row {
+    flex-direction: column;
+  }
+
+  .p-4 {
+    padding: 1rem;
   }
 
   h1.text-3xl {
     font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+    letter-spacing: 0;
+  }
+
+  h2.text-xl {
+    font-size: 1.35rem;
+  }
+
+  h3.font-semibold {
+    font-size: 1rem;
   }
 
   button {
-    padding: 0.5rem 1rem;
+    padding: 0.55rem 1rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="file"],
+  select {
+    padding: 0.55rem 0.75rem;
+    font-size: 0.8rem;
+    border-radius: 8px;
+  }
+
+  input[type="text"]:focus,
+  input[type="email"]:focus,
+  input[type="password"]:focus,
+  input[type="number"]:focus,
+  input[type="tel"]:focus,
+  select:focus {
+    border-color: #000;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+    transform: translateY(-1px);
+  }
+
+  .rounded-2xl {
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .gap-2 {
+    gap: 0.75rem;
+  }
+
+  .gap-3 {
+    gap: 0.75rem;
+  }
+
+  .gap-4 {
+    gap: 1rem;
+  }
+
+  .gap-6 {
+    gap: 0.75rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.75rem;
+  }
+
+  .mb-3 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 1rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1.25rem;
+  }
+
+  .mt-2 {
+    margin-top: 0.5rem;
+  }
+
+  .mt-3 {
+    margin-top: 0.75rem;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.75rem;
+  }
+
+  .flex {
+    flex-direction: column;
+  }
+
+  .flex-row {
+    flex-direction: column;
+  }
+
+  .flex-row-reverse {
+    flex-direction: column-reverse;
+  }
+
+  .w-full {
+    width: 100%;
+  }
+
+  .text-xs {
     font-size: 0.75rem;
+  }
+
+  .text-sm {
+    font-size: 0.85rem;
+  }
+
+  .text-lg {
+    font-size: 1rem;
+  }
+}
+
+/* Extra Small Phones (max-width: 480px) */
+@media (max-width: 480px) {
+  .max-w-5xl {
+    max-width: 100%;
+  }
+
+  .p-4 {
+    padding: 0.75rem;
+  }
+
+  h1.text-3xl {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  h2.text-xl {
+    font-size: 1.2rem;
+  }
+
+  h3.font-semibold {
+    font-size: 0.95rem;
+  }
+
+  button {
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+  button:hover {
+    transform: translateY(-1px);
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="tel"],
+  input[type="file"],
+  select {
+    padding: 0.5rem 0.65rem;
+    font-size: 0.75rem;
+    border-radius: 6px;
+    width: 100%;
+  }
+
+  .rounded-2xl {
+    border-radius: 8px;
+    padding: 0.75rem;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  .gap-3 {
+    gap: 0.5rem;
+  }
+
+  .gap-4 {
+    gap: 0.75rem;
+  }
+
+  .gap-6 {
+    gap: 0.75rem;
+  }
+
+  .mb-2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .mb-3 {
+    margin-bottom: 0.75rem;
+  }
+
+  .mb-4 {
+    margin-bottom: 0.75rem;
+  }
+
+  .mb-6 {
+    margin-bottom: 1rem;
+  }
+
+  .space-y-3 > * + * {
+    margin-top: 0.5rem;
+  }
+
+  .text-xs {
+    font-size: 0.7rem;
+  }
+
+  .text-sm {
+    font-size: 0.8rem;
+  }
+
+  .text-lg {
+    font-size: 0.95rem;
+  }
+
+  .h-16,
+  .w-16 {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .h-24,
+  .w-24 {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr !important;
   }
 }
 

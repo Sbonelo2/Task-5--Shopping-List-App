@@ -30,6 +30,42 @@ main {
   margin-bottom: 46rem;
   margin-left: 31rem;
 }
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .Topic {
+    font-size: 2rem;
+    margin-left: 20rem;
+    margin-bottom: 35rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .Topic {
+    font-size: 1.75rem;
+    margin-left: 10rem;
+    margin-bottom: 25rem;
+    margin: 15px;
+  }
+}
+
+@media (max-width: 640px) {
+  .Topic {
+    font-size: 1.5rem;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 15rem;
+    margin: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Topic {
+    font-size: 1.25rem;
+    margin-bottom: 10rem;
+    margin: 8px;
+  }
+}
 /* .Navbar {
   display: flex;
   justify-content: space-between;
@@ -39,14 +75,3 @@ main {
   color: white;
   font-family: Arial, sans-serif;
 }  */
-
-
-
-
-
-
-
-
-
-
-
