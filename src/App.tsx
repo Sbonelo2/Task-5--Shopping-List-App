@@ -12,34 +12,41 @@ import ProtectedRoute from "./Components/ProtectedRoute";
 export default function App() {
   return (
     <div>
-      <NavBar />
       <Routes>
-        {/* Landing page */}
+        {/* Landing page - full screen without nav/footer */}
         <Route path="/" element={<Landing />} />
         
-        {/* Public routes */}
-        <Route path="/registration" element={<Registration />} />
-        <Route path="/login" element={<Login />} />
-        
-        {/* Protected routes - require authentication */}
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <ShopAgain />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          }
-        />
+        {/* Other routes with nav and footer */}
+        <Route path="/*" element={
+          <>
+            <NavBar />
+            <Routes>
+              {/* Public routes */}
+              <Route path="/registration" element={<Registration />} />
+              <Route path="/login" element={<Login />} />
+              
+              {/* Protected routes - require authentication */}
+              <Route
+                path="/home"
+                element={
+                  <ProtectedRoute>
+                    <ShopAgain />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  <ProtectedRoute>
+                    <Profile />
+                  </ProtectedRoute>
+                }
+              />
+            </Routes>
+            <Footer />
+          </>
+        } />
       </Routes>
-      <Footer />
     </div>
   );
 }
