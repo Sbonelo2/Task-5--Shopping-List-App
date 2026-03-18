@@ -319,6 +319,14 @@
       "cellphone": "0606218076",
       "email": "cbonelo224@gmail.com",
       "password": "$$Dut021024"
+    },
+    {
+      "id": "ecca",
+      "username": "Mthimbothi",
+      "name": "S'bonelo",
+      "cellphone": "0606218075",
+      "email": "cbonelo224@gmail.com",
+      "password": "$$Dut021024"
     }
   ],
   "shoppingLists": [
@@ -441,6 +449,24 @@
         }
       ],
       "userId": "8a38"
+    },
+    {
+      "id": "0455daec-86a1-4642-b9c6-f72bc9f5a832",
+      "title": "guru",
+      "date": "2026-03-18T13:11:48.648Z",
+      "subItems": [
+        {
+          "id": "04e97cb1-b150-4bd7-8071-96de782665eb",
+          "name": "thyt",
+          "quantity": "65",
+          "category": "ghnghnm",
+          "notes": "mhgfm",
+          "image": "",
+          "date": "2026-03-18T13:11:58.977Z"
+        }
+      ],
+      "userId": "ecca"
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }
