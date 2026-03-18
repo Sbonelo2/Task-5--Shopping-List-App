@@ -105,12 +105,12 @@ button:active {
 
 /* Color Variants */
 .bg-blue-600 {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
   color: white;
 }
 
 .bg-blue-600:hover {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  background: linear-gradient(135deg, #ff5252, #ff3333);
 }
 
 .bg-green-600 {
@@ -132,7 +132,7 @@ button:active {
 }
 
 .bg-red-500 {
-  background: linear-gradient(135deg, #ef4444, #dc2626);
+  background: linear-gradient(135deg, #1A1A1A, #1A1A1A);
   color: white;
 }
 

@@ -180,7 +180,7 @@ export default function Login() {
           <Link
             to="/registration"
             style={{
-              color: "blue",
+              color: "#ff6b6b",
               textDecoration: "underline",
               cursor: "pointer",
             }}

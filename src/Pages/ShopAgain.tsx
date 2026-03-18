@@ -237,7 +237,24 @@ export default function ShopAgain() {
         />
         <button
           onClick={() => setSearchQuery("")}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          style={{
+            backgroundColor: "#ff6b6b",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.375rem",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "500",
+            transition: "all 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#ff5252";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "#ff6b6b";
+            e.currentTarget.style.transform = "translateY(0)";
+          }}
         >
           Clear
         </button>
@@ -254,7 +271,24 @@ export default function ShopAgain() {
         />
         <button
           onClick={handleAddCard}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+          style={{
+            backgroundColor: "#ff6b6b",
+            color: "white",
+            padding: "0.5rem 1rem",
+            borderRadius: "0.375rem",
+            border: "none",
+            cursor: "pointer",
+            fontWeight: "500",
+            transition: "all 0.3s",
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = "#ff5252";
+            e.currentTarget.style.transform = "translateY(-2px)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = "#ff6b6b";
+            e.currentTarget.style.transform = "translateY(0)";
+          }}
         >
           Add List
         </button>
@@ -548,7 +582,35 @@ export default function ShopAgain() {
                 <button
                   type="submit"
                   disabled={!subForm.parentId || subForm.parentId !== list.id}
-                  className="mt-3 bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded w-full font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                  style={{
+                    marginTop: "0.75rem",
+                    backgroundColor: "#ff6b6b",
+                    color: "white",
+                    padding: "0.5rem 0.75rem",
+                    borderRadius: "0.375rem",
+                    border: "none",
+                    cursor:
+                      !subForm.parentId || subForm.parentId !== list.id
+                        ? "not-allowed"
+                        : "pointer",
+                    fontWeight: "600",
+                    width: "100%",
+                    opacity:
+                      !subForm.parentId || subForm.parentId !== list.id
+                        ? 0.5
+                        : 1,
+                    transition: "all 0.3s",
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!(!subForm.parentId || subForm.parentId !== list.id)) {
+                      e.currentTarget.style.backgroundColor = "#ff5252";
+                      e.currentTarget.style.transform = "translateY(-2px)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = "#ff6b6b";
+                    e.currentTarget.style.transform = "translateY(0)";
+                  }}
                 >
                   {subForm.parentId === list.id && subForm.id && subForm.id
                     ? "💾 Update Item"

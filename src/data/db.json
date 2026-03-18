@@ -327,6 +327,22 @@
       "cellphone": "0606218075",
       "email": "cbonelo224@gmail.com",
       "password": "$$Dut021024"
+    },
+    {
+      "id": "d974",
+      "username": "silwane",
+      "name": "S'bonelo",
+      "cellphone": "0987654321",
+      "email": "cbonelo224@gmail.com",
+      "password": "$$Dut021024"
+    },
+    {
+      "id": "b1ec",
+      "username": "Mtimomo",
+      "name": "Mfanafuthi",
+      "cellphone": "0987654321",
+      "email": "Mfanafuthi@gmail.com",
+      "password": "$$dut021024"
     }
   ],
   "shoppingLists": [
@@ -466,6 +482,13 @@
         }
       ],
       "userId": "ecca"
+    },
+    {
+      "id": "ba1c2842-2ea9-4de4-b8c7-03a985d9a7ce",
+      "title": "ftghgytj",
+      "date": "2026-03-18T13:52:19.108Z",
+      "subItems": [],
+      "userId": "b1ec"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
