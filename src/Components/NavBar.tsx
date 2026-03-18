@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   FaShoppingCart,
   FaUser,
@@ -11,8 +11,20 @@ import { MdLogout } from "react-icons/md";
 
 export default function NavBar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userDropdownOpen, setUserDropdownOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const userId = localStorage.getItem("loggedInUserId");
+    setIsLoggedIn(!!userId);
+  }, [location]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("loggedInUserId");
+    setIsLoggedIn(false);
+    navigate("/login");
+  };
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -140,40 +152,32 @@ export default function NavBar() {
               <FaUser /> Profile
             </Link>
 
-            <Link
-              to="/registration"
-              style={navLinkStyle("/registration")}
-              onMouseEnter={(e) => {
-                if (!isActive("/registration")) {
-                  e.currentTarget.style.color = "#ff6b6b";
-                  e.currentTarget.style.backgroundColor =
-                    "rgba(255, 107, 107, 0.1)";
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!isActive("/registration")) {
-                  e.currentTarget.style.color = "#e0e0e0";
-                  e.currentTarget.style.backgroundColor = "transparent";
-                }
-              }}
-            >
-              Register
-            </Link>
+            {!isLoggedIn && (
+              <Link
+                to="/registration"
+                style={navLinkStyle("/registration")}
+                onMouseEnter={(e) => {
+                  if (!isActive("/registration")) {
+                    e.currentTarget.style.color = "#ff6b6b";
+                    e.currentTarget.style.backgroundColor =
+                      "rgba(255, 107, 107, 0.1)";
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive("/registration")) {
+                    e.currentTarget.style.color = "#e0e0e0";
+                    e.currentTarget.style.backgroundColor = "transparent";
+                  }
+                }}
+              >
+                Register
+              </Link>
+            )}
           </div>
-          {/* User Dropdown - Desktop */}
-          <div
-            style={
-              {
-                position: "relative",
-                display: "none",
-                "@media (minWidth: 768px)": {
-                  display: "block",
-                },
-              } as any
-            }
-          >
+          {/* Simple Logout Button - Always Visible */}
+          {isLoggedIn && (
             <button
-              onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+              onClick={handleLogout}
               style={{
                 backgroundColor: "#ff6b6b",
                 color: "white",
@@ -200,84 +204,34 @@ export default function NavBar() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             >
-              <FaUser /> Account
+              <MdLogout /> Logout
             </button>
-
-            {/* Dropdown Menu */}
-            {userDropdownOpen && (
-              <div
-                style={{
-                  position: "absolute",
-                  top: "100%",
-                  right: 0,
-                  backgroundColor: "#0d0d0d",
-                  border: "1px solid #333",
-                  borderRadius: "6px",
-                  minWidth: "200px",
-                  marginTop: "0.5rem",
-                  boxShadow: "0 4px 20px rgba(0, 0, 0, 0.5)",
-                  animation: "slideDown 0.2s ease",
-                }}
-              >
-                <Link
-                  to="/profile"
-                  onClick={() => setUserDropdownOpen(false)}
-                  style={{
-                    color: "#e0e0e0",
-                    textDecoration: "none",
-                    padding: "0.8rem 1.2rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                    borderBottom: "1px solid #333",
-                    transition: "all 0.3s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 107, 107, 0.2)";
-                    e.currentTarget.style.color = "#ff6b6b";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#e0e0e0";
-                  }}
-                >
-                  <FaUser /> My Profile
-                </Link>
-                <button
-                  onClick={() => {
-                    setUserDropdownOpen(false);
-                    // Add logout logic here
-                  }}
-                  style={{
-                    width: "100%",
-                    color: "#e0e0e0",
-                    backgroundColor: "transparent",
-                    border: "none",
-                    padding: "0.8rem 1.2rem",
-                    textAlign: "left",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                    cursor: "pointer",
-                    transition: "all 0.3s",
-                    fontSize: "0.95rem",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor =
-                      "rgba(255, 107, 107, 0.2)";
-                    e.currentTarget.style.color = "#ff6b6b";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "transparent";
-                    e.currentTarget.style.color = "#e0e0e0";
-                  }}
-                >
-                  <MdLogout /> Logout
-                </button>
-              </div>
-            )}
-          </div>
+          )}
+          {/* Desktop Logout Button */}
+          {!isLoggedIn && (
+            <button
+              onClick={handleLogout}
+              disabled
+              style={{
+                backgroundColor: "#ff6b6b",
+                color: "white",
+                border: "none",
+                padding: "0.6rem 1.2rem",
+                borderRadius: "6px",
+                cursor: "not-allowed",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontSize: "0.95rem",
+                fontWeight: "600",
+                transition: "all 0.3s",
+                opacity: 0.5,
+              }}
+            >
+              <MdLogout /> Logout
+            </button>
+          )}
+          {/* User Dropdown - Removed for simplicity */}
 
           {/* Mobile Menu Button */}
           <button
@@ -335,33 +289,41 @@ export default function NavBar() {
             <FaUser /> Profile
           </Link>
 
-          <Link
-            to="/registration"
-            onClick={() => setMobileMenuOpen(false)}
-            style={{
-              ...navLinkStyle("/registration"),
-              padding: "0.8rem 1rem",
-            }}
-          >
-            Register
-          </Link>
+          {!isLoggedIn && (
+            <Link
+              to="/registration"
+              onClick={() => setMobileMenuOpen(false)}
+              style={{
+                ...navLinkStyle("/registration"),
+                padding: "0.8rem 1rem",
+              }}
+            >
+              Register
+            </Link>
+          )}
 
           <button
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => {
+              setMobileMenuOpen(false);
+              handleLogout();
+            }}
             style={{
-              backgroundColor: "#ff6b6b",
+              backgroundColor: isLoggedIn ? "#ff6b6b" : "#999",
               color: "white",
               border: "none",
               padding: "0.8rem 1rem",
               borderRadius: "4px",
-              cursor: "pointer",
+              cursor: isLoggedIn ? "pointer" : "not-allowed",
               display: "flex",
               alignItems: "center",
               gap: "0.5rem",
               fontSize: "0.95rem",
               fontWeight: "600",
               marginTop: "0.5rem",
+              opacity: isLoggedIn ? 1 : 0.6,
+              transition: "all 0.3s",
             }}
+            disabled={!isLoggedIn}
           >
             <MdLogout /> Logout
           </button>
